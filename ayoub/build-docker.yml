@@ -15,7 +15,6 @@
 
     - name: Build Docker image on the control machine
       docker_image:
-        path: /tmp/yourrepo
         name: "{{ docker_image_name }}"
         tag: "{{ docker_image_tag }}"
         source: build
