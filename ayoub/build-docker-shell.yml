@@ -7,9 +7,9 @@
     docker_image_name: ayoubelmimouni/test-ansible
     docker_image_tag: latest
     git_repo_url: https://github.com/digitalocean/sample-dockerfile.git
-    dockerhub:
-      docker_username: '{{ lookup("env", "dockerhubnew.username") }}'
-      docker_password: '{{ lookup("env", "dockerhubnew.password") }}'
+    cloud:
+      docker_username: '{{ lookup("env", "username") }}'
+      docker_password: '{{ lookup("env", "password") }}'
 
   tasks:
     - name: Update apt package cache
@@ -31,7 +31,7 @@
       become: true
 
     - name: Log in to Docker Hub
-      command: "docker login -u {{ dockerhub.docker_username }} -p {{ dockerhub.docker_password }}"
+      command: "docker login -u {{ cloud.docker_username }} -p {{ cloud.docker_password }}"
       become: true
 
     - name: Push Docker image to Docker Hub
