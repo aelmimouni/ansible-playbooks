@@ -3,9 +3,9 @@
   hosts: localhost  # Set the target to the control machine
   gather_facts: false  # No need to gather facts on the control machine
   vars:
-    docker_image_name: your_dockerhub_username/your_image_name
+    docker_image_name: ayoubelmimouni/test-ansible
     docker_image_tag: latest
-    git_repo_url: https://github.com/yourusername/yourrepo.git
+    git_repo_url: https://github.com/digitalocean/sample-dockerfile.git
 
   tasks:
     - name: Clone Git repository on the control machine
@@ -23,9 +23,8 @@
     - name: Log in to Docker Hub
       docker_login:
         registry_url: https://index.docker.io/v1/
-        username: "{{ container_registry_credential.username }}"
-        password: "{{ container_registry_credential.password }}"
-        email: "{{ container_registry_credential.email }}"
+        username: "{{ docker_basic_username }}"
+        password: "{{ docker_basic_password }}"
 
     - name: Push Docker image to Docker Hub
       community.docker.docker_image:
