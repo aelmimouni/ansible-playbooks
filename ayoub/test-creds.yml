@@ -7,6 +7,7 @@
   tasks:
     - name: Example Task
       debug:
-        msg: "Username: {{ api_key }}
+        var:
+          - username_from_credential
       vars:
         username_from_credential: "{{ typetest1.username }}"
