@@ -23,7 +23,7 @@
         repo: "{{ git_repo_url }}"
         dest: /tmp/yourrepo
 
-    - name: Build Docker image
+    - name: Build Image
       docker_image:
         path: /tmp/yourrepo
         name: "{{ docker_image_name }}"
