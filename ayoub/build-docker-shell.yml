@@ -28,8 +28,13 @@
       set_fact:
         docker_image_tag: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
 
+    - name: Show Docker image tag
+      debug:
+        var: docker_image_tag
+      register: docker_build_result
+
     - name: Build Docker image
-      command: "docker build -t {{ docker_image_name }}:{{ docker_image_tag }} /tmp/yourrepo"
+      command: "docker build -t {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }} /tmp/yourrepo"
       become: true
 
 
@@ -38,7 +43,7 @@
       become: true
 
     - name: Push Docker image to Docker Hub
-      command: "docker push {{ docker_image_name }}:{{ docker_image_tag }}"
+      command: "docker push {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }}"
       become: true
 
     - name: Log out from Docker Hub
