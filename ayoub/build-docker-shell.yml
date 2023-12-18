@@ -32,7 +32,7 @@
 
     - name: Show Docker build result
       debug:
-        var: docker_build_result.stdout
+        var: docker_build_result
 
     - name: Log in to Docker Hub
       command: "docker login -u {{ docker_username }} -p {{ docker_password }}"
