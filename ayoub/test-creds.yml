@@ -1,0 +1,12 @@
+---
+- name: Example Playbook with Custom Credentials
+  hosts: all
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Example Task
+      debug:
+        msg: "Username: {{ api_key }}
+      vars:
+        username_from_credential: "{{ typetest1.username }}"
