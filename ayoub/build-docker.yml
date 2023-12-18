@@ -12,7 +12,6 @@
       git:
         repo: "{{ git_repo_url }}"
         dest: /tmp/yourrepo
-      delegate_to: localhost  # Delegate the task to the control machine
 
     - name: Build Docker image on the control machine
       docker_image:
@@ -20,7 +19,6 @@
         name: "{{ docker_image_name }}"
         tag: "{{ docker_image_tag }}"
         source: build
-      delegate_to: localhost  # Delegate the task to the control machine
 
     - name: Log in to Docker Hub
       docker_login:
