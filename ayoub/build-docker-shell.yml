@@ -1,0 +1,40 @@
+---
+- name: Build and Push Docker Image to Docker Hub
+  hosts: all
+  become: true
+  become_user: root
+  vars:
+    docker_image_name: ayoubelmimouni/test-ansible
+    docker_image_tag: latest
+    git_repo_url: https://github.com/digitalocean/sample-dockerfile.git
+
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+
+    - name: Clone Git repository
+      git:
+        repo: "{{ git_repo_url }}"
+        dest: /tmp/yourrepo
+
+    - name: Build Docker image
+      command: "docker build -t {{ docker_image_name }}:{{ docker_image_tag }} /tmp/yourrepo"
+      become: true
+
+    - name: Log in to Docker Hub
+      command: "docker login -u {{ container_registry_credential.username }} -p {{ container_registry_credential.password }}"
+      become: true
+
+    - name: Push Docker image to Docker Hub
+      command: "docker push {{ docker_image_name }}:{{ docker_image_tag }}"
+      become: true
+
+    - name: Log out from Docker Hub
+      command: "docker logout"
+      become: true
