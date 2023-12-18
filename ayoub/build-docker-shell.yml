@@ -8,8 +8,8 @@
     docker_image_tag: latest
     git_repo_url: https://github.com/digitalocean/sample-dockerfile.git
     cloud:
-      docker_username: '{{ lookup("env", "username") }}'
-      docker_password: '{{ lookup("env", "password") }}'
+      docker_username: '{{ lookup("ansible.builtin.env", "username") }}'
+      docker_password: '{{ lookup("ansible.builtin.env", "password") }}'
 
   tasks:
     - name: Update apt package cache
