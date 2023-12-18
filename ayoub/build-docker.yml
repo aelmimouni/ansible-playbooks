@@ -18,7 +18,7 @@
         path: /tmp/yourrepo
         name: "{{ docker_image_name }}"
         tag: "{{ docker_image_tag }}"
-        source: archive
+        source: build
 
     - name: Log in to Docker Hub
       docker_login:
