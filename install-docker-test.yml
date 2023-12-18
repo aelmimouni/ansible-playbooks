@@ -1,7 +1,6 @@
 ---
 - name: Install Docker
   hosts: all
-  become: true
   tasks:
     - name: Update apt package cache
       apt:
