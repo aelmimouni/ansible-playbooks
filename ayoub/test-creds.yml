@@ -10,4 +10,4 @@
         var:
           - username_from_credential
       vars:
-        username_from_credential: "{{ typetest1.username }}"
+        username_from_credential: "{{ rest_api_token }}"
