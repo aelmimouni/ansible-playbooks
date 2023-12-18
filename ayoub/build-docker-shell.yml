@@ -7,8 +7,8 @@
     docker_image_name: ayoubelmimouni/test-ansible
     docker_image_tag: latest
     git_repo_url: https://github.com/digitalocean/sample-dockerfile.git
-    docker_username: '{{ lookup("env", "dockerhubnew.username") }}'
-    docker_password: '{{ lookup("env", "dockerhubnew.password") }}'
+    docker_username: '{{ lookup("env", "dockerhubnew.Username") }}'
+    docker_password: '{{ lookup("env", "dockerhubnew.Password") }}'
 
   tasks:
     - name: Update apt package cache
