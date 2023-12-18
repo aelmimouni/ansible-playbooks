@@ -30,7 +30,7 @@
       become: true
       register: docker_build_result
 
-    - name: Debug: Show Docker build result
+    - name: Show Docker build result
       debug:
         var: docker_build_result.stdout_lines
 
