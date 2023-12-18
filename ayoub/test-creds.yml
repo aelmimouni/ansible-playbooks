@@ -4,10 +4,10 @@
   become: true
   become_user: root
 
+  vars:
+    your_custom_credential: "{{ rest_api_token }}"
+
   tasks:
-    - name: Example Task
-      debug:
-        var:
-          - username_from_credential
-      vars:
-        username_from_credential: "{{ rest_api_token }}"
+    - name: Build Docker image
+      command: "echo {{ your_custom_credential }}"
+      become: true
