@@ -5,7 +5,6 @@
   become_user: root
   vars:
     docker_image_name: ayoubelmimouni/test-ansible
-    docker_image_tag: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
     git_repo_url: https://github.com/digitalocean/sample-dockerfile.git
     docker_username: '{{ docker_basic_username }}'
     docker_password: '{{ docker_basic_password }}'
@@ -25,14 +24,14 @@
         repo: "{{ git_repo_url }}"
         dest: /tmp/yourrepo
 
+    - name: Generate Docker image tag
+      set_fact:
+        docker_image_tag: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+
     - name: Build Docker image
       command: "docker build -t {{ docker_image_name }}:{{ docker_image_tag }} /tmp/yourrepo"
       become: true
-      register: docker_build_result
 
-    - name: Show Docker build result
-      debug:
-        var: "{{ docker_image_tag }}"
 
     - name: Log in to Docker Hub
       command: "docker login -u {{ docker_username }} -p {{ docker_password }}"
