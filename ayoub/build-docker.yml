@@ -28,7 +28,7 @@
         email: "{{ container_registry_credential.email }}"
 
     - name: Push Docker image to Docker Hub
-      docker_image_push:
+      community.docker.docker_image:
         name: "{{ docker_image_name }}"
         tag: "{{ docker_image_tag }}"
 
