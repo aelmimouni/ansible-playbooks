@@ -28,6 +28,11 @@
     - name: Build Docker image
       command: "docker build -t {{ docker_image_name }}:{{ docker_image_tag }} /tmp/yourrepo"
       become: true
+      register: docker_build_result
+
+    - name: Debug: Show Docker build result
+      debug:
+        var: docker_build_result.stdout_lines
 
     - name: Log in to Docker Hub
       command: "docker login -u {{ docker_username }} -p {{ docker_password }}"
