@@ -31,7 +31,7 @@
       become: true
 
     - name: Log in to Docker Hub
-      command: "docker login -u {{ docker_username }} -p {{ docker_password }}"
+      command: "docker login -u {{ dockerhub.docker_username }} -p {{ dockerhub.docker_password }}"
       become: true
 
     - name: Push Docker image to Docker Hub
