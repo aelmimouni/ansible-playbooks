@@ -13,6 +13,6 @@
   tasks:
     - name: Clone Git repository
       git:
-        repo: 'https://{{ github_password }}@github.com/{{ org_name }}/t{{ repo_name }}.git'
+        repo: 'https://{{ github_password }}@github.com/{{ org_name }}/{{ repo_name }}.git'
         dest: /tmp/yourrepo
         
