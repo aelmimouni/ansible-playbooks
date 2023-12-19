@@ -42,4 +42,4 @@
       become: true
       become_user: root
       gather_facts: false
-      ansible_host: "{{ ec2_instance.instances[0].public_ip }}"
+      ansible_host: "{{ ec2_instance.instances[0].public_ip_address }}"
