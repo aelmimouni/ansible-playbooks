@@ -38,7 +38,7 @@
         var: ec2_instance
       when: state == 'started'
       
-     - name: Add new instance to host group
+    - name: Add new instance to host group
       add_host:
         hostname: "{{ item.public_ip }}"
         groupname: just_launched
