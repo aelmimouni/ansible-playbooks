@@ -13,6 +13,7 @@
       s3_bucket:
         region: "{{ region }}"
         name: "{{ bucket_name }}"
+        state: absent
       register: s3_bucket_result
 
     - name: Print S3 bucket details
