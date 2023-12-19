@@ -39,6 +39,6 @@
 
     - name: Ping EC2 instance using SSH
       ansible.builtin.ping:
-      become: false
-      gather_facts: false
-      ansible_host: "{{ ec2_instance.instances[0].public_ip_address }}"
+        become: false
+        gather_facts: false
+        ansible_host: "{{ ec2_instance.instances[0].public_ip_address }}"
