@@ -5,11 +5,8 @@
 
   vars_prompt:
     - name: state
-      prompt: "Choose the desired state"
+      prompt: "Choose the desired state? started, absent"
       private: no
-      choices:
-        - started
-        - absent
 
   vars:
     instance_type: "t2.micro"
