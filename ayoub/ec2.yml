@@ -1,0 +1,32 @@
+---
+- name: Create EC2 Instance
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    instance_type: "t2.micro"
+    image_id: "ami-06873c81b882339ac"  # Amazon Linux 2 AMI, replace with your desired AMI
+    key_name: "main_kp"
+    region: "ca-central-1"
+    security_group: "sg-022b83a9e56b7ff53"
+    subnet_id: "subnet-0497d4a4b815f3750"
+    count: 1
+
+  tasks:
+    - name: Create EC2 instance
+      ec2:
+        key_name: "{{ key_name }}"
+        region: "{{ region }}"
+        image: "{{ image_id }}"
+        instance_type: "{{ instance_type }}"
+        group_id: "{{ security_group }}"
+        vpc_subnet_id: "{{ subnet_id }}"
+        count: "{{ count }}"
+        wait: true
+        instance_tags:
+          Name: "ansible-AWX"
+      register: ec2_instance
+
+    - name: Print EC2 instance details
+      debug:
+        var: ec2_instance
