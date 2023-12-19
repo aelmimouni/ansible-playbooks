@@ -1,0 +1,23 @@
+---
+- name: Create S3 Bucket
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    region: "ca-central-1"
+    bucket_name: "test-awx-bucket-biotwin"
+    acl: "private"  
+
+  tasks:
+    - name: Create S3 bucket
+      s3_bucket:
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        region: "{{ region }}"
+        name: "{{ bucket_name }}"
+        acl: "{{ acl }}"
+      register: s3_bucket_result
+
+    - name: Print S3 bucket details
+      debug:
+        var: s3_bucket_result
