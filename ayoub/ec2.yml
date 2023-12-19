@@ -42,7 +42,7 @@
       add_host:
         hostname: "{{ item.public_ip }}"
         groupname: just_launched
-      loop: "{{ run_instances.instances }}"
+      loop: "{{ ec2_instance.instances }}"
       when: state == 'started'
 
 
