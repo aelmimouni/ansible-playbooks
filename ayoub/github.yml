@@ -6,7 +6,7 @@
 
   vars:
     your_custom_credential: "{{ rest_api_token }}"
-    git_repo_url: https://github.com/Bio-Twin/twin-tech-web.git
+    git_repo_url: git@github.com:Bio-Twin/twin-tech-web.git
   
   tasks:
     - name: Clone Git repository
