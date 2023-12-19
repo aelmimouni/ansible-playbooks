@@ -53,7 +53,6 @@
 - hosts: just_launched
   become: true
   become_user: root
-  when: state == 'started'
   tasks:
     # Install Docker on the EC2 instance
     - name: Install Docker
@@ -61,39 +60,48 @@
         name: docker.io
         state: present
         update_cache: yes
+      when: state == 'started'
     - name: Install Git
       apt:
         name: git
         state: present
+      when: state == 'started'
     
     - name: Clone Git repository
       git:
         repo: "{{ git_repo_url }}"
         dest: /tmp/yourrepo
+      when: state == 'started'
 
     - name: Generate Docker image tag
       set_fact:
         docker_image_tag: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+      when: state == 'started'
 
     - name: Show Docker image tag
       debug:
         var: docker_image_tag
+      when: state == 'started'
       register: docker_build_result
 
     - name: Build Docker image
       command: "docker build -t {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }} /tmp/yourrepo"
       become: true
+      when: state == 'started'
 
 
     - name: Log in to Docker Hub
       command: "docker login -u {{ docker_username }} -p {{ docker_password }}"
       become: true
+      when: state == 'started'
 
     - name: Push Docker image to Docker Hub
       command: "docker push {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }}"
       become: true
+      when: state == 'started'
 
     - name: Log out from Docker Hub
       command: "docker logout"
       become: true
+      when: state == 'started'
 
