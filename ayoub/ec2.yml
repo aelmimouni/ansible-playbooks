@@ -3,10 +3,6 @@
   hosts: localhost
   gather_facts: false
 
-  vars_prompt:
-    - name: state
-      prompt: "Choose the desired state? started, absent"
-      private: no
 
   vars:
     instance_type: "t2.micro"
