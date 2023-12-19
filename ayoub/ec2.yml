@@ -12,10 +12,6 @@
     security_group: "sg-022b83a9e56b7ff53"
     subnet_id: "subnet-0497d4a4b815f3750"
     count: 1
-    docker_image_name: ayoubelmimouni/test-ansible
-    git_repo_url: https://github.com/digitalocean/sample-dockerfile.git
-    docker_username: '{{ docker_basic_username }}'
-    docker_password: '{{ docker_basic_password }}'
 
   tasks:
     - name: Create EC2 instance
@@ -53,6 +49,12 @@
 - hosts: just_launched
   become: true
   become_user: root
+  
+  vars:
+    docker_image_name: ayoubelmimouni/test-ansible
+    git_repo_url: https://github.com/digitalocean/sample-dockerfile.git
+    docker_username: '{{ docker_basic_username }}'
+    docker_password: '{{ docker_basic_password }}'
   tasks:
     # Install Docker on the EC2 instance
     - name: Install Docker
