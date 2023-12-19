@@ -1,7 +1,8 @@
 ---
 - name: Build and Push Docker Image to Docker Hub
-  hosts: localhost  # Set the target to the control machine
-  gather_facts: false  # No need to gather facts on the control machine
+  hosts: all
+  become: true
+  become_user: root
   vars:
     docker_image_name: ayoubelmimouni/test-ansible
     docker_image_tag: latest
