@@ -1,0 +1,16 @@
+---
+- name: Example Playbook with github creds
+  hosts: all
+  become: true
+  become_user: root
+
+  vars:
+    your_custom_credential: "{{ rest_api_token }}"
+    git_repo_url: https://github.com/Bio-Twin/twin-tech-web.git
+  
+  tasks:
+    - name: Clone Git repository
+      git:
+        repo: "{{ git_repo_url }}"
+        dest: /tmp/yourrepo
+        
