@@ -14,17 +14,19 @@
 
   tasks:
     - name: Create EC2 instance
-      ec2_instance:
+      amazon.aws.ec2_instance:
+        name: "ansible-AWX-instance"
         key_name: "{{ key_name }}"
         region: "{{ region }}"
-        image: "{{ image_id }}"
+        image_id: "{{ image_id }}"
         instance_type: "{{ instance_type }}"
-        group_id: "{{ security_group }}"
+        security_group: "{{ security_group }}"
         vpc_subnet_id: "{{ subnet_id }}"
         count: "{{ count }}"
         wait: true
-        instance_tags:
-          Name: "ansible-AWX"
+        tags:
+          Environment: Testing
+
       register: ec2_instance
 
     - name: Print EC2 instance details
