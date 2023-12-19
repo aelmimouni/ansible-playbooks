@@ -26,7 +26,7 @@
         wait: true
         tags:
           Environment: Testing
-        state: absent
+        state: running
 
       register: ec2_instance
 
