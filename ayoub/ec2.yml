@@ -12,6 +12,10 @@
     security_group: "sg-022b83a9e56b7ff53"
     subnet_id: "subnet-0497d4a4b815f3750"
     count: 1
+    docker_image_name: ayoubelmimouni/test-ansible
+    git_repo_url: https://github.com/digitalocean/sample-dockerfile.git
+    docker_username: '{{ docker_basic_username }}'
+    docker_password: '{{ docker_basic_password }}'
 
   tasks:
     - name: Create EC2 instance
@@ -49,6 +53,7 @@
 - hosts: just_launched
   become: true
   become_user: root
+  when: state == 'started'
   tasks:
     # Install Docker on the EC2 instance
     - name: Install Docker
@@ -56,5 +61,39 @@
         name: docker.io
         state: present
         update_cache: yes
-      when: state == 'started'
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+    
+    - name: Clone Git repository
+      git:
+        repo: "{{ git_repo_url }}"
+        dest: /tmp/yourrepo
+
+    - name: Generate Docker image tag
+      set_fact:
+        docker_image_tag: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+
+    - name: Show Docker image tag
+      debug:
+        var: docker_image_tag
+      register: docker_build_result
+
+    - name: Build Docker image
+      command: "docker build -t {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }} /tmp/yourrepo"
+      become: true
+
+
+    - name: Log in to Docker Hub
+      command: "docker login -u {{ docker_username }} -p {{ docker_password }}"
+      become: true
+
+    - name: Push Docker image to Docker Hub
+      command: "docker push {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }}"
+      become: true
+
+    - name: Log out from Docker Hub
+      command: "docker logout"
+      become: true
 
