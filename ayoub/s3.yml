@@ -13,7 +13,6 @@
       s3_bucket:
         region: "{{ region }}"
         name: "{{ bucket_name }}"
-        acl: "{{ acl }}"
       register: s3_bucket_result
 
     - name: Print S3 bucket details
