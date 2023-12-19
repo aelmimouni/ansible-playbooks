@@ -33,6 +33,7 @@
         push: true
         name: "{{ docker_image_name }}"
         tag: "{{ docker_image_tag }}"
+        source: local
 
     - name: Log out from Docker Hub
       docker_login:
