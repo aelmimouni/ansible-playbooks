@@ -36,3 +36,10 @@
     - name: Print EC2 instance details
       debug:
         var: ec2_instance
+
+    - name: Ping EC2 instance using SSH
+      ansible.builtin.ping:
+      become: true
+      become_user: root
+      gather_facts: false
+      ansible_host: "{{ ec2_instance.instances[0].public_ip }}"
