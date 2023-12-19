@@ -37,7 +37,19 @@
       debug:
         var: ec2_instance
       when: state == 'started'
+      
+     - name: Add new instance to host group
+      add_host:
+        hostname: "{{ item.public_ip }}"
+        groupname: just_launched
+      loop: "{{ run_instances.instances }}"
+      when: state == 'started'
 
+
+- hosts: just_launched
+  become: true
+  become_user: root
+  tasks:
     # Install Docker on the EC2 instance
     - name: Install Docker
       apt:
