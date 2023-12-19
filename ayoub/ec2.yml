@@ -38,12 +38,6 @@
         var: ec2_instance
       when: state == 'started'
 
-    - name: Connect to EC2 instance
-      become: yes
-      become_user: root
-      connection: ssh
-      ansible_ssh_host: "{{ ec2_instance.instances[0].public_ip_address }}"
-      when: state == 'started'
     # Install Docker on the EC2 instance
     - name: Install Docker
       apt:
