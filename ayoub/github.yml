@@ -5,12 +5,14 @@
   become_user: root
 
   vars:
-    your_custom_credential: "{{ rest_api_token }}"
-    git_repo_url: git@github.com:Bio-Twin/twin-tech-web.git
+    github_username: '{{ github_basic_username }}'
+    github_password: '{{ github_basic_password }}'
+    repo_name: twin-tech-web
+    org_name: Bio-Twin
   
   tasks:
     - name: Clone Git repository
       git:
-        repo: "{{ git_repo_url }}"
+        repo: 'https://{{ github_password }}@github.com/{{ org_name }}/t{{ repo_name }}.git'
         dest: /tmp/yourrepo
         
