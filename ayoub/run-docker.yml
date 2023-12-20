@@ -1,0 +1,22 @@
+---
+- name: Build and Push Docker Image to Docker Hub
+  hosts: all
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Run Docker Container
+      docker_container:
+        name: my_container
+        image: busybox
+        command: ["sleep", "100"]
+        state: started
+        detach: true
+
+      register: docker_result
+
+    - name: Wait for Docker Container to stop
+      wait_for:
+        path: "/var/lib/docker/containers/{{ docker_result.id }}/exit-status"
+        state: absent
+      when: docker_result.changed
