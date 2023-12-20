@@ -16,7 +16,7 @@
       register: docker_result
       
     - name: Wait for the container to exit
-      command: docker inspect -f '{{ .State.ExitCode }}' my_container
+      command: "docker inspect -f '{{ .State.ExitCode }}' my_container"
       register: exit_code_result
       until: exit_code_result.stdout != '0'
       retries: 60
