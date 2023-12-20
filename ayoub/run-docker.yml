@@ -19,9 +19,11 @@
       docker_container_info:
         name: my_container
       register: container_info
-      until: container_info.State.Status == 'exited'
-      retries: 60
-      delay: 10
+
+    - name: Debug Docker Result
+      debug:
+        var: container_info
+
 
 
     - name: Pause to allow container to start
