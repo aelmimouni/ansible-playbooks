@@ -114,8 +114,10 @@
         command: ["sleep", "20"]
         state: started
         detach: true
+      when: state == 'started'
 
     - name: Pause to allow container to start
       pause:
         seconds: 21
+      when: state == 'started'
 
