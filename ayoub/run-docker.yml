@@ -19,17 +19,10 @@
       pause:
         seconds: 5
 
-    - name: Get Docker Container Info
-      docker_container_info:
-        name: my_container
-
-      register: container_info_result
-
     - name: Save status
       set_fact:
-        container_is_running: "{{ container_info_result.containers[0].State.Running }}"
+        container_is_running: "{{ docker_result.status == 'started' }}"
 
     - fail:
         msg: "The service is not running"
       when: not container_is_running
-
