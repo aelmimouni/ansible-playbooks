@@ -17,6 +17,6 @@
 
     - name: Wait for Docker Container to stop
       wait_for:
-        path: "/var/lib/docker/containers/{{ docker_result.id }}/exit-status"
+        path: "/var/lib/docker/containers/{{ docker_result.Hostname }}/exit-status"
         state: absent
       when: docker_result.changed
