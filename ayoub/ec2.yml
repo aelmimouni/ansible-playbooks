@@ -115,4 +115,6 @@
         state: started
         detach: false
         cleanup: true
+      when: state == 'started'
+
 
