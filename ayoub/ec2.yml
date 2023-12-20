@@ -111,13 +111,8 @@
       docker_container:
         name: my_container
         image: busybox
-        command: ["sleep", "20"]
+        command: ["sleep", "60"]
         state: started
-        detach: true
-      when: state == 'started'
-
-    - name: Pause to allow container to start
-      pause:
-        seconds: 21
-      when: state == 'started'
+        detach: false
+        cleanup: true
 
