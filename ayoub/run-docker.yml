@@ -9,14 +9,17 @@
       docker_container:
         name: my_container
         image: busybox
-        command: ["sleep", "100"]
+        command: ["sleep", "20"]
         state: started
         detach: true
 
       register: docker_result
+  
+    - name: Save status
+      set_fact:
+        container_is_running: "{{ docker_result.ansible_facts.docker_container.State.Running }}"
 
-    - name: Wait for Docker Container to stop
-      wait_for:
-        path: "/var/lib/docker/containers/{{ docker_result.Hostname }}/exit-status"
-        state: absent
-      when: docker_result.changed
+    - fail:
+        msg: "The service is not running"
+      when: not container_is_running
+
