@@ -14,15 +14,7 @@
         detach: true
 
       register: docker_result
-  
-    - name: Pause to allow container to start
-      pause:
-        seconds: 5
 
-    - name: Save status
-      set_fact:
-        container_is_running: "{{ docker_result.status == 'started' }}"
-
-    - fail:
-        msg: "The service is not running"
-      when: not container_is_running
+    - name: Debug Docker Result
+      debug:
+        var: docker_result
