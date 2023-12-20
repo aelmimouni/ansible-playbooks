@@ -107,3 +107,15 @@
       become: true
       when: state == 'started'
 
+    - name: Run Docker Container
+      docker_container:
+        name: my_container
+        image: busybox
+        command: ["sleep", "20"]
+        state: started
+        detach: true
+
+    - name: Pause to allow container to start
+      pause:
+        seconds: 21
+
