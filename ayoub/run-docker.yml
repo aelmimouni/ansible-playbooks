@@ -9,7 +9,7 @@
       docker_container:
         name: my_container
         image: busybox
-        command: ["sleep", "20"]
+        command: ["psleep", "20"]
         state: started
         detach: true
 
