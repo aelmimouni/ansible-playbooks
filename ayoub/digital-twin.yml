@@ -95,10 +95,13 @@
       when: state == 'started'
       register: docker_build_result
 
-    - name: Build Docker image
-      command: "docker build -t {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }} /tmp/yourrepo"
-      become: true
-      when: state == 'started'
+    - name: Build Docker image on the control machine
+      docker_image:
+        name: "{{ docker_image_name }}"
+        tag: "{{ docker_build_result.docker_image_tag }}"
+        source: build
+        build:
+          path: /tmp/yourrepo
 
     - name: Run Docker Container
       docker_container:
