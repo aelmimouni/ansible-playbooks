@@ -129,7 +129,7 @@
           MARIADB_USER: '{{ MARIADB_USER }}'
           MARIADB_PASSWORD: '{{ MARIADB_PASSWORD }}'
           MARIADB_URL: '{{ MARIADB_URL }}'
-          MARIADB_DATABASE_NAME: '{{ docker_basic_username }}'
+          MARIADB_DATABASE_NAME: '{{ MARIADB_DATABASE_NAME }}'
           CLEARML_WEB_HOST: '{{ CLEARML_WEB_HOST }}'
           CLEARML_API_HOST: '{{ CLEARML_API_HOST }}'
           CLEARML_FILES_HOST: '{{ CLEARML_FILES_HOST }}'
