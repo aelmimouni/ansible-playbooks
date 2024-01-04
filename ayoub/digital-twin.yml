@@ -22,6 +22,11 @@
         image_id: "{{ image_id }}"
         instance_type: "{{ instance_type }}"
         security_group: "{{ security_group }}"
+        volumes:
+          - device_name: /dev/sda1
+            ebs:
+              volume_size: 16
+              delete_on_termination: true
         vpc_subnet_id: "{{ subnet_id }}"
         count: "{{ count }}"
         network:
