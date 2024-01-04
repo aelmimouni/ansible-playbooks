@@ -98,7 +98,7 @@
     - name: Run Docker Container
       docker_container:
         name: my_container
-        image: {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }}
+        image: '{{ docker_image_name }}:{{ docker_build_result.docker_image_tag }}'
         state: started
         detach: false
         cleanup: true
