@@ -75,6 +75,7 @@
     - name: Clone Git repository
       git:
         repo: 'https://{{ github_password }}@github.com/{{ org_name }}/{{ repo_name }}.git'
+        version: ps_fix_kev_bs
         dest: /tmp/yourrepo
       when: state == 'started'
 
