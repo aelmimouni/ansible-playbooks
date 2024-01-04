@@ -1,0 +1,104 @@
+---
+- name: Create EC2 Instance
+  hosts: localhost
+  gather_facts: false
+
+
+  vars:
+    instance_type: "t2.micro"
+    image_id: "ami-06873c81b882339ac"
+    key_name: "main_kp"
+    region: "ca-central-1"
+    security_group: "sg-022b83a9e56b7ff53"
+    subnet_id: "subnet-0497d4a4b815f3750"
+    count: 1
+
+  tasks:
+    - name: Create EC2 instance
+      amazon.aws.ec2_instance:
+        name: "ansible-AWX-instance"
+        key_name: "{{ key_name }}"
+        region: "{{ region }}"
+        image_id: "{{ image_id }}"
+        instance_type: "{{ instance_type }}"
+        security_group: "{{ security_group }}"
+        vpc_subnet_id: "{{ subnet_id }}"
+        count: "{{ count }}"
+        network:
+          assign_public_ip: true
+        wait: true
+        tags:
+          Environment: Testing
+        state: "{{ state | default('absent') }}"
+
+      register: ec2_instance
+
+    - name: Print EC2 instance details
+      debug:
+        var: ec2_instance
+      when: state == 'started'
+      
+    - name: Add new instance to host group
+      add_host:
+        hostname: "{{ item.public_ip_address }}"
+        groupname: just_launched
+      loop: "{{ ec2_instance.instances }}"
+      when: state == 'started'
+
+
+- hosts: just_launched
+  become: true
+  become_user: root
+  
+  vars:
+    docker_image_name: ayoubelmimouni/test-ansible
+    docker_username: '{{ docker_basic_username }}'
+    docker_password: '{{ docker_basic_password }}'
+    github_username: '{{ github_basic_username }}'
+    github_password: '{{ github_basic_password }}'
+    repo_name: digital-twin
+    org_name: Bio-Twin
+  tasks:
+    # Install Docker on the EC2 instance
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      when: state == 'started'
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+      when: state == 'started'
+    
+    - name: Clone Git repository
+      git:
+        repo: 'https://{{ github_password }}@github.com/{{ org_name }}/{{ repo_name }}.git'
+        dest: /tmp/yourrepo
+      when: state == 'started'
+
+    - name: Generate Docker image tag
+      set_fact:
+        docker_image_tag: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+      when: state == 'started'
+
+    - name: Show Docker image tag
+      debug:
+        var: docker_image_tag
+      when: state == 'started'
+      register: docker_build_result
+
+    - name: Build Docker image
+      command: "docker build -t {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }} /tmp/yourrepo"
+      become: true
+      when: state == 'started'
+
+    - name: Run Docker Container
+      docker_container:
+        name: my_container
+        image: {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }}
+        state: started
+        detach: false
+        cleanup: true
+      when: state == 'started'
