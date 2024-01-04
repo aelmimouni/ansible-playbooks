@@ -25,7 +25,7 @@
         volumes:
           - device_name: /dev/sda1
             ebs:
-              volume_size: 16
+              volume_size: 40
               delete_on_termination: true
         vpc_subnet_id: "{{ subnet_id }}"
         count: "{{ count }}"
