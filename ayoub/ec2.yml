@@ -56,19 +56,6 @@
     docker_username: '{{ docker_basic_username }}'
     docker_password: '{{ docker_basic_password }}'
   tasks:
-    # Install Docker on the EC2 instance
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
-        update_cache: yes
-      when: state == 'started'
-    - name: Install Git
-      apt:
-        name: git
-        state: present
-      when: state == 'started'
-    
     - name: Clone Git repository
       git:
         repo: "{{ git_repo_url }}"
