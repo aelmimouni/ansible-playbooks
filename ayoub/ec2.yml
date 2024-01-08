@@ -6,7 +6,7 @@
 
   vars:
     instance_type: "t2.micro"
-    image_id: "ami-06873c81b882339ac"  # Amazon Linux 2 AMI, replace with your desired AMI
+    image_id: "ami-0bfc0cecf50f6416f"  # Amazon Linux 2 AMI, replace with your desired AMI
     key_name: "main_kp"
     region: "ca-central-1"
     security_group: "sg-022b83a9e56b7ff53"
