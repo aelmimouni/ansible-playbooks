@@ -6,7 +6,7 @@
 
   vars:
     instance_type: "m4.2xlarge"
-    image_id: "ami-06873c81b882339ac"
+    image_id: "ami-0bfc0cecf50f6416f"
     key_name: "main_kp"
     region: "ca-central-1"
     security_group: "sg-022b83a9e56b7ff53"
@@ -62,23 +62,11 @@
     repo_name: digital-twin
     org_name: Bio-Twin
   tasks:
-    # Install Docker on the EC2 instance
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
-        update_cache: yes
-      when: state == 'started'
-    - name: Install Git
-      apt:
-        name: git
-        state: present
-      when: state == 'started'
-    
     - name: Clone Git repository
       git:
         repo: 'https://{{ github_password }}@github.com/{{ org_name }}/{{ repo_name }}.git'
         dest: /tmp/yourrepo
+        version: ps_docker_image
       when: state == 'started'
 
     - name: Generate Docker image tag
