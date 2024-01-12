@@ -6,7 +6,7 @@
 
   vars:
     instance_type: "m4.2xlarge"
-    image_id: "ami-0bfc0cecf50f6416f"
+    image_id: "ami-0ed1c671df1428bd6"
     key_name: "main_kp"
     region: "ca-central-1"
     security_group: "sg-022b83a9e56b7ff53"
