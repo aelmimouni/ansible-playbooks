@@ -1,0 +1,99 @@
+---
+- name: Create EC2 Instance
+  hosts: localhost
+  gather_facts: false
+
+
+  vars:
+    instance_type: "m4.2xlarge"
+    image_id: "ami-0ed1c671df1428bd6"
+    key_name: "main_kp"
+    region: "ca-central-1"
+    security_group: "sg-022b83a9e56b7ff53"
+    subnet_id: "subnet-0497d4a4b815f3750"
+
+  tasks:
+    - name: Create EC2 instance
+      amazon.aws.ec2_instance:
+        name: "ansible-AWX-instance"
+        key_name: "{{ key_name }}"
+        region: "{{ region }}"
+        image_id: "{{ image_id }}"
+        instance_type: "{{ instance_type }}"
+        security_group: "{{ security_group }}"
+        volumes:
+          - device_name: /dev/sda1
+            ebs:
+              volume_size: 100
+              delete_on_termination: true
+        vpc_subnet_id: "{{ subnet_id }}"
+        network:
+          assign_public_ip: true
+        wait: true
+        tags:
+          Environment: Testing
+        state: "{{ state | default('absent') }}"
+
+      register: ec2_instance
+
+    - name: Print EC2 instance details
+      debug:
+        var: ec2_instance
+      when: state == 'started'
+      
+    - name: Add new instance to host group
+      add_host:
+        hostname: "{{ item.public_ip_address }}"
+        groupname: just_launched
+      loop: "{{ ec2_instance.instances }}"
+      when: state == 'started'
+
+
+- hosts: just_launched
+  become: true
+  become_user: root
+  
+  vars:
+    docker_image_name: ayoubelmimouni/test-ansible
+    docker_username: '{{ docker_basic_username }}'
+    docker_password: '{{ docker_basic_password }}'
+    github_username: '{{ github_basic_username }}'
+    github_password: '{{ github_basic_password }}'
+    repo_name: digital-twin
+    org_name: Bio-Twin
+  tasks:
+    - name: Clone Git repository
+      git:
+        repo: 'https://{{ github_password }}@github.com/{{ org_name }}/{{ repo_name }}.git'
+        dest: /tmp/yourrepo
+        version: kv_awx_test
+      when: state == 'started'
+
+    - name: Generate Docker image tag
+      set_fact:
+        docker_image_tag: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+      when: state == 'started'
+
+    - name: Show Docker image tag
+      debug:
+        var: docker_image_tag
+      when: state == 'started'
+      register: docker_build_result
+
+    - name: Build an image with BuildKit and push it to a private repo
+      ansible.builtin.shell:
+        cmd: |-
+          pip3 install poetry
+          apt-get update -y && apt-get install gcc python3-dev -y
+          poetry install
+          python3 user_prediction.py
+        chdir: /tmp/yourrepo
+      environment: 
+        DOCKER_BUILDKIT: 1
+        LOG_LEVEL: "DEBUG"
+        DATABASE_NAME: "kev"
+        DATABASE_USER: "digitaltwin"
+        DATABASE_PASSWORD: '{{ DATABASE_PASSWORD }}'
+        DATABASE_URL: '{{ DATABASE_URL }}'
+        DATABASE_PORT: "5432"
+      when: state == 'started'
