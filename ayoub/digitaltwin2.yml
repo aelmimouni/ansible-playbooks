@@ -83,17 +83,23 @@
     - name: Build an image with BuildKit and push it to a private repo
       ansible.builtin.shell:
         cmd: |-
-          pip3 install poetry
-          apt-get update -y && apt-get install gcc python3-dev -y
-          poetry install
-          python3 user_prediction.py
+          docker build .  -t {{ docker_image_name }}:{{ docker_build_result.docker_image_tag }}
         chdir: /tmp/yourrepo
       environment: 
         DOCKER_BUILDKIT: 1
-        LOG_LEVEL: "DEBUG"
-        DATABASE_NAME: "kev"
-        DATABASE_USER: "digitaltwin"
-        DATABASE_PASSWORD: '{{ DATABASE_PASSWORD }}'
-        DATABASE_URL: '{{ DATABASE_URL }}'
-        DATABASE_PORT: "5432"
+
+    - name: Run Docker Container
+      docker_container:
+        name: my_container
+        image: '{{ docker_image_name }}:{{ docker_build_result.docker_image_tag }}'
+        state: started
+        detach: false
+        cleanup: true
+        env:
+          LOG_LEVEL: "DEBUG"
+          DATABASE_NAME: "kev"
+          DATABASE_USER: "digitaltwin"
+          DATABASE_PASSWORD: '{{ DATABASE_PASSWORD }}'
+          DATABASE_URL: '{{ DATABASE_URL }}'
+          DATABASE_PORT: "5432"
       when: state == 'started'
