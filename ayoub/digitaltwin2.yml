@@ -96,10 +96,10 @@
         detach: false
         cleanup: true
         env:
-          LOG_LEVEL: "DEBUG"
-          DATABASE_NAME: "kev"
-          DATABASE_USER: "digitaltwin"
+          LOG_LEVEL: '{{ LOG_LEVEL }}'
+          DATABASE_NAME: '{{ DATABASE_NAME }}'
+          DATABASE_USER: '{{ DATABASE_USER }}'
           DATABASE_PASSWORD: '{{ DATABASE_PASSWORD }}'
           DATABASE_URL: '{{ DATABASE_URL }}'
-          DATABASE_PORT: "5432"
+          DATABASE_PORT: '{{ DATABASE_PORT }}'
       when: state == 'started'
