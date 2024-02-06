@@ -96,10 +96,10 @@
         detach: false
         cleanup: true
         env:
-          LOG_LEVEL: '{{ LOG_LEVEL }}'
-          DATABASE_NAME: '{{ DATABASE_NAME }}'
-          DATABASE_USER: '{{ DATABASE_USER }}'
-          DATABASE_PASSWORD: '{{ DATABASE_PASSWORD }}'
-          DATABASE_URL: '{{ DATABASE_URL }}'
-          DATABASE_PORT: '{{ DATABASE_PORT }}'
+          DYNACONF_LOG_LEVEL: '{{ LOG_LEVEL }}'
+          DYNACONF_DATABASE_NAME: '{{ DATABASE_NAME }}'
+          DYNACONF_DATABASE_USER: '{{ DATABASE_USER }}'
+          DYNACONF_DATABASE_PASSWORD: '{{ DATABASE_PASSWORD }}'
+          DYNACONF_DATABASE_URL: '{{ DATABASE_URL }}'
+          DYNACONF_DATABASE_PORT: '{{ DATABASE_PORT }}'
       when: state == 'started'
